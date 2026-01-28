@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ titre }}{% endblock %}
+
+{% block body %}
+  <h1>{{ titre }}</h1>
+
+  <p>Test calcul twig: {{ 3+6 }}</p>
+
+  <ul>
+    {% for x in liste %}
+      <li>{{ x }}</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
+
