@@ -2,27 +2,9 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Calculs{% endblock %}</title>
+    <title>{% block title %}Mon site{% endblock %}</title>
 </head>
 <body>
-
-<h1>Calcul de n!</h1>
-<form method="get">
-    <input type="number" name="n" value="{{ n ?? '' }}">
-    <button type="submit">OK</button>
-</form>
-
-<h1>Calcul des combinaisons de n éléments dans p places</h1>
-<form method="get">
-    <input type="number" name="n" value="{{ n ?? '' }}">
-    <input type="number" name="p" value="{{ p ?? '' }}">
-    <button type="submit">OK</button>
-</form>
-
-<h2>Résultat</h2>
-{% block resultat %}
-    {# vide par défaut #}
-{% endblock %}
-
+    {% block body %}{% endblock %}
 </body>
 </html>

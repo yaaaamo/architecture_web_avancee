@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mastermind{% endblock %}
+
+{% block body %}
+<h1>Mastermind</h1>
+
+<p>Veuillez saisir successivement des combinaisons de {{ taille }} chiffres jusqu'à la victoire !</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Numéro</th>
+      <th>Proposition</th>
+      <th>Bien placé(s)</th>
+      <th>Mal placé(s)</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for e in essais %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ e.code }}</td>
+        <td>{{ e.bien }}</td>
+        <td>{{ e.mal }}</td>
+      </tr>
+    {% endfor %}
+
+    {% if not fini %}
+      <tr>
+        <td>{{ essais|length + 1 }}</td>
+        <td>
+          <form method="get" action="{{ path('master') }}">
+            <input
+              type="text"
+              name="code"
+              maxlength="{{ taille }}"
+              pattern="\d{{ '{' ~ taille ~ '}' }}"
+              required
+            >
+            <button type="submit">OK</button>
+          </form>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+    {% endif %}
+  </tbody>
+</table>
+
+{% if message %}
+  <p>{{ message }}</p>
+{% endif %}
+
+{% if fini %}
+  <p><strong>GAGNÉ !</strong></p>
+{% endif %}
+
+<form method="get" action="{{ path('master') }}">
+  <button type="submit" name="new" value="1">Nouveau Jeu !</button>
+</form>
+{% endblock %}
