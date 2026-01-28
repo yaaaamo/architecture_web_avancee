@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block resultat %}
+    {% if n is defined and r is defined and p is not defined %}
+        <p>Factorielle({{ n }}) = {{ r }}</p>
+
+    {% elseif n is defined and p is defined and r is defined %}
+        <p>Combinaisons({{ n }}, {{ p }}) = {{ r }}</p>
+    {% endif %}
+{% endblock %}
