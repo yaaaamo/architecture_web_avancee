@@ -1,5 +1,5 @@
 <?php
-namespace App\Service;
+namespace App\Game;
 
 interface iMastermind {
      public function __construct($taille=4); // crée un nouveau jeu

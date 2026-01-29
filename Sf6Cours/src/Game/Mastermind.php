@@ -1,7 +1,7 @@
 <?php
 
-namespace App\Entity;
-use App\Service\iMastermind;
+namespace App\Game;
+use App\Game\iMastermind;
 
 class Mastermind implements iMastermind
 {
