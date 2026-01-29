@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Service\Mastermind;
+use App\Entity\Mastermind;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,28 +15,31 @@ class MastermindController extends AbstractController
     {
         $session = $request->getSession();
 
+        // reset
         if ($request->query->get('new')) {
             $session->remove('mastermind');
         }
 
         $game = $session->get('mastermind');
 
-        if (!$game) {
+        // si pas de jeu en session => on crée
+        if (!$game instanceof Mastermind) {
             $game = new Mastermind(4);
             $session->set('mastermind', $game);
         }
 
         $message = null;
 
+        // proposition
         $code = $request->query->get('code');
         if ($code !== null && $code !== '') {
-            if (!$game->test((string) $code)) {
-                $message = "Veuillez saisir une proposition S.V.P. !";
+            if (!$game->test((string)$code)) {
+                $message = "Veuillez saisir une proposition valide (4 chiffres différents).";
             }
             $session->set('mastermind', $game);
         }
 
-        return $this->render('mastermind/mastermind.html.twig', [
+        return $this->render('mastermind\mastermind.html.twig', [
             'taille'  => $game->getTaille(),
             'essais'  => $game->getEssais(),
             'fini'    => $game->isFini(),

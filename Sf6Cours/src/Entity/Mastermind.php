@@ -1,49 +1,35 @@
 <?php
-// src/Service/Mastermind.php
-namespace App\Service;
 
-class Mastermind
+namespace App\Entity;
+use App\Service\iMastermind;
+
+class Mastermind implements iMastermind
 {
     private int $taille;
     private string $secret;
-    /** @var array<int, array{code:string,bien:int,mal:int}> */
-    private array $essais = [];
+    private array $essais = []; 
 
-    public function __construct(int $taille = 4)
+    public function __construct($taille = 4)
     {
         $this->taille = $taille;
         $this->secret = $this->generateSecret($taille);
     }
 
-    public function getTaille(): int
-    {
-        return $this->taille;
-    }
-
-    /** @return array<int, array{code:string,bien:int,mal:int}> */
-    public function getEssais(): array
-    {
-        return $this->essais;
-    }
+    public function getTaille(): int { return $this->taille; }
+    public function getEssais(): array { return $this->essais; }
 
     public function isFini(): bool
     {
-        if (empty($this->essais)) {
-            return false;
-        }
+        if (empty($this->essais)) return false;
         $last = $this->essais[array_key_last($this->essais)];
         return $last['bien'] === $this->taille;
     }
 
-    /**
-     * Teste une proposition.
-     * Retourne true si proposition valide (ajoutée à l'historique), false sinon.
-     */
-    public function test(string $code): bool
+    public function test($code): bool
     {
         $code = trim($code);
 
-        // longueur + uniquement chiffres
+        // validation : exactement 4 chiffres
         if (strlen($code) !== $this->taille) return false;
         if (!ctype_digit($code)) return false;
 
@@ -61,27 +47,24 @@ class Mastermind
         return true;
     }
 
-    private function generateSecret(int $taille): string
+    private function generateSecret($taille): string
     {
         $digits = range(0, 9);
         shuffle($digits);
         return implode('', array_slice($digits, 0, $taille));
     }
 
-    /** @return array{0:int,1:int} */
-    private function compare(string $code): array
+    private function compare($code): array
     {
         $secretArr = str_split($this->secret);
         $codeArr   = str_split($code);
 
         $bien = 0;
         for ($i = 0; $i < $this->taille; $i++) {
-            if ($codeArr[$i] === $secretArr[$i]) {
-                $bien++;
-            }
+            if ($codeArr[$i] === $secretArr[$i]) $bien++;
         }
 
-        // chiffres tous différents => mal placés = commun - bien placés
+        // tous différents => mal = commun - bien
         $totalPresent = count(array_intersect($codeArr, $secretArr));
         $mal = $totalPresent - $bien;
 
